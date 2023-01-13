@@ -13,7 +13,7 @@ const cloudinaryUploader = multer({
   storage: new CloudinaryStorage({
     cloudinary,
     params: {
-      folder: "BEwk2d5/mediaPosters",
+      folder: "",
       public_id: (req, file) => req.params.mediaId,
     },
   }),
@@ -82,7 +82,7 @@ mediaRouter.post(
       cloudinary.url
 
       const cloudinaryURL =
-        "https://res.cloudinary.com/dycynydei/image/upload/BEwk2d5/mediaPosters/" +
+        "" +
         fileName;
 
       const updatedArray = await getMediaAndUpdate(
@@ -91,7 +91,7 @@ mediaRouter.post(
         next
       );
 
-      await writeMedia(updatedArray);
+      writeMedia(updatedArray);
 
       res.send({
         message: "Poster image added successfully",
