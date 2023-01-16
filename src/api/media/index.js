@@ -11,9 +11,9 @@ import { pipeline } from "stream";
 
 const cloudinaryUploader = multer({
   storage: new CloudinaryStorage({
-    cloudinary,
+    cloudinary, 
     params: {
-      folder: "",
+      folder: "../../../public/img",
       public_id: (req, file) => req.params.mediaId,
     },
   }),
