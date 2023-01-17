@@ -4,20 +4,8 @@ import { getMediaAndUpdate, selectMedia } from "../../lib/media-tools.js";
 import uniqid from "uniqid";
 import multer from "multer";
 import { dirname, extname, join } from "path";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { v2 as cloudinary } from "cloudinary";
 import { createMediaPdf } from "../../lib/pdf-tools.js";
 import { pipeline } from "stream";
-
-const cloudinaryUploader = multer({
-  storage: new CloudinaryStorage({
-    cloudinary, 
-    params: {
-      folder: "../../../public/img",
-      public_id: (req, file) => req.params.mediaId,
-    },
-  }),
-}).single("poster");
 
 const mediaRouter = express.Router();
 
@@ -70,38 +58,6 @@ mediaRouter.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
-// Add poster to media entry
-
-mediaRouter.post(
-  "/:mediaId/poster",
-  cloudinaryUploader,
-  async (req, res, next) => {
-    try {
-      const fileName = req.params.mediaId + extname(req.file.originalname);
-      cloudinary.url
-
-      const cloudinaryURL =
-        "" +
-        fileName;
-
-      const updatedArray = await getMediaAndUpdate(
-        { poster: cloudinaryURL },
-        req.params.mediaId,
-        next
-      );
-
-      writeMedia(updatedArray);
-
-      res.send({
-        message: "Poster image added successfully",
-        newPosterURL: cloudinaryURL,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 // Edit media entry
 
